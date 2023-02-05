@@ -3,7 +3,7 @@
 ## Attention
 Makefile configured for docker compose (golang) plugin.
 
-To run with docker compose (python),
+To run with docker-compose (python),
 you need to replace "docker compose" with "docker-compose" in Makefile.
 
 ## How to
