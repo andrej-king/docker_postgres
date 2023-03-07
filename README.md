@@ -38,3 +38,8 @@ password:   password
 db:         my_app
 port:       5432
 ```
+
+### pgadmin ()
+```
+localhost:5050
+```
