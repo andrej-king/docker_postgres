@@ -7,19 +7,43 @@ services:
             interval: 10s
             retries: 3
         restart: unless-stopped
-        environment:
-            TZ: UTC
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: postgres
-            APP_DB_USER: app
-            APP_DB_PASS: password
-            APP_DB_NAME: my_app
+        env_file: .env
         ports:
             - "5432:5432"
         volumes:
             - postgres-app-data:/var/lib/postgresql/data
             - ./postgres_init/:/docker-entrypoint-initdb.d/
+        networks:
+            - postgres-bridge
+
+    pgadmin:
+        build:
+            context: pgadmin
+            dockerfile: Dockerfile
+        env_file: .env
+        environment:
+            PGADMIN_DEFAULT_EMAIL: 'pgadmin4@example.com'
+            PGADMIN_DEFAULT_PASSWORD: 'admin'
+            PGADMIN_CONFIG_SERVER_MODE: 'False'
+            PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+        volumes:
+            - pgadmin-data:/var/lib/pgadmin
+        healthcheck:
+            test: [ "CMD", "wget", "-O", "-", "http://localhost:80/misc/ping" ]
+            interval: 10s
+            timeout: 10s
+            retries: 5
+        ports:
+            - "5050:80"
+        networks:
+            - postgres-bridge
+        restart: unless-stopped
+        depends_on:
+            - postgres
+
+networks:
+    postgres-bridge:
 
 volumes:
     postgres-app-data:
+    pgadmin-data:
