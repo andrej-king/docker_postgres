@@ -39,7 +39,7 @@ db:         my_app
 port:       5432
 ```
 
-### pgadmin ()
-```
-localhost:5050
-```
+### pgAdmin
+[localhost:5050][101] Open pgAdmin page.
+
+[101]: http://localhost:5050
