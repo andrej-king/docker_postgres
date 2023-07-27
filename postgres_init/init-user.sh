@@ -13,3 +13,8 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-E
   CREATE DATABASE $APP_DB_NAME;
   GRANT ALL PRIVILEGES ON DATABASE $APP_DB_NAME TO $APP_DB_USER;
 EOSQL
+
+echo "Granting all privileges on schema to $APP_DB_USER"
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$APP_DB_NAME" <<-EOSQL
+    GRANT ALL PRIVILEGES ON SCHEMA public TO $APP_DB_USER;
+EOSQL
